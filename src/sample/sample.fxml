@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="330.0" prefWidth="600.0" style="-fx-background-color: #e1ede7;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+   <children>
+      <HBox prefHeight="330.0" prefWidth="600.0">
+         <children>
+            <VBox prefHeight="330.0" prefWidth="420.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="ENTER TEXT" textAlignment="CENTER" wrappingWidth="418.4000137329102">
+                     <font>
+                        <Font name="David CLM Bold Italic" size="27.0" />
+                     </font>
+                  </Text>
+                  <TextArea fx:id="inputText" prefHeight="218.0" prefWidth="380.0">
+                     <VBox.margin>
+                        <Insets left="20.0" right="20.0" />
+                     </VBox.margin>
+                  </TextArea>
+                  <Button mnemonicParsing="false" onAction="#showCharactersStatistic" prefHeight="42.0" prefWidth="490.0" style="-fx-background-color: #6579e0;" text="Show characters statistic" textFill="WHITE">
+                     <font>
+                        <Font name="Source Code Pro Black" size="19.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="20.0" right="20.0" top="20.0" />
+                     </VBox.margin>
+                  </Button>
+               </children>
+            </VBox>
+            <VBox prefHeight="330.0" prefWidth="100.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Characters statistic" textAlignment="CENTER" wrappingWidth="180.79994201660156">
+                     <font>
+                        <Font name="David CLM Bold Italic" size="15.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="20.0" />
+                     </VBox.margin>
+                  </Text>
+                  <TextArea fx:id="areaCharactersStatistic" editable="false" prefHeight="165.0" prefWidth="130.0">
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="20.0" right="30.0" />
+                     </VBox.margin>
+                  </TextArea>
+                  <HBox prefHeight="26.0" prefWidth="600.0">
+                     <children>
+                        <Label prefHeight="26.0" prefWidth="70.0" text="Entropy:">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                           <font>
+                              <Font name="David CLM Bold Italic" size="16.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="entropyField" editable="false" prefHeight="26.0" prefWidth="114.0">
+                           <HBox.margin>
+                              <Insets right="15.0" />
+                           </HBox.margin>
+                        </TextField>
+                     </children>
+                  </HBox>
+                  <Button fx:id="buttonShowTree" disable="true" mnemonicParsing="false" onAction="#showSceneWithTree" prefHeight="42.0" prefWidth="166.0" style="-fx-background-color: green;" text="Show tree" textFill="WHITE">
+                     <font>
+                        <Font name="Source Code Pro Black" size="19.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets right="15.0" top="29.0" />
+                     </VBox.margin>
+                  </Button>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>

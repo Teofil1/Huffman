@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="520.0" prefWidth="900.0" style="-fx-background-color: #e1ede7;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tree.ControllerHuffmanTree">
+   <children>
+      <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <HBox prefHeight="400.0" prefWidth="500.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <VBox prefHeight="520.0" prefWidth="240.0">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Characters code" textAlignment="CENTER" wrappingWidth="239.35503387451172">
+                           <font>
+                              <Font name="David CLM Bold Italic" size="20.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets top="40.0" />
+                           </VBox.margin>
+                        </Text>
+                        <TextArea fx:id="areaCharactersCode" editable="false" prefHeight="226.0" prefWidth="179.0">
+                           <VBox.margin>
+                              <Insets left="30.0" right="30.0" top="5.0" />
+                           </VBox.margin>
+                        </TextArea>
+                        <HBox prefHeight="26.0" prefWidth="240.0">
+                           <children>
+                              <Label prefHeight="18.0" prefWidth="122.0" text="Average word length:">
+                                 <font>
+                                    <Font name="David CLM Bold Italic" size="14.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets top="2.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <TextField fx:id="averageWordLengthField" editable="false" prefHeight="26.0" prefWidth="78.0" />
+                           </children>
+                           <padding>
+                              <Insets left="20.0" right="20.0" top="20.0" />
+                           </padding>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <ScrollPane prefHeight="520.0" prefWidth="660.0" HBox.hgrow="ALWAYS">
+                     <content>
+                        <Canvas fx:id="canvas" />
+                     </content>
+                     <HBox.margin>
+                        <Insets right="10.0" top="10.0" />
+                     </HBox.margin>
+                  </ScrollPane>
+               </children>
+            </HBox>
+            <Text nodeOrientation="LEFT_TO_RIGHT" strokeType="OUTSIDE" strokeWidth="0.0" text="Coded text" textAlignment="CENTER" wrappingWidth="900.0">
+               <font>
+                  <Font name="David CLM Bold Italic" size="20.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+            </Text>
+            <TextArea fx:id="areaCodedText" editable="false" prefHeight="106.0" prefWidth="880.0">
+               <VBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" />
+               </VBox.margin>
+            </TextArea>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
