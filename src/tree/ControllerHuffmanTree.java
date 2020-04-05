@@ -10,18 +10,19 @@ public class ControllerHuffmanTree{
 
     @FXML
     Canvas canvas;
-
-    HuffmanTree huffmanTree = new HuffmanTree();
+    /*Tree tree = new Tree();*/
 
     public void showHuffmanTree(Map<String, Long> letters){
         GraphicsContext gc = canvas.getGraphicsContext2D();
-        Node topNode = huffmanTree.buildTree(letters);
+        Tree huffmanTree = Tree.buildHuffmanTree(letters);
+        System.out.println(huffmanTree.getDepth());
+
         double sizeNode = 40;
-        int depthTree = huffmanTree.getDepth(topNode);
-        double widthCanvas = sizeNode*(Math.pow(2,depthTree))*2+4*sizeNode;
-        double heightCanvas = sizeNode*(depthTree+1)+sizeNode*Math.pow(2,depthTree)*2+4*sizeNode;
+        double widthCanvas = sizeNode*(Math.pow(2,huffmanTree.getDepth()))*2+4*sizeNode;
+        double heightCanvas = sizeNode*(huffmanTree.getDepth()+1)+sizeNode*Math.pow(2,huffmanTree.getDepth())*2+4*sizeNode;
         canvas.setWidth(widthCanvas);
         canvas.setHeight(heightCanvas);
-        huffmanTree.drawTree(topNode, gc, widthCanvas/2,sizeNode, depthTree, sizeNode);
+
+        huffmanTree.drawTree(gc, widthCanvas/2,sizeNode, sizeNode);
     }
 }
