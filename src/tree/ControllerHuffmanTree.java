@@ -3,19 +3,22 @@ package tree;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.TextArea;
 
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class ControllerHuffmanTree{
 
     @FXML
     Canvas canvas;
-    /*Tree tree = new Tree();*/
 
-    public void showHuffmanTree(Map<String, Long> letters){
+    @FXML
+    TextArea areaCharactersCode;
+
+    public void showHuffmanTree(Map<String, Long> characters){
         GraphicsContext gc = canvas.getGraphicsContext2D();
-        Tree huffmanTree = Tree.buildHuffmanTree(letters);
-        System.out.println(huffmanTree.getDepth());
+        HuffmanTree huffmanTree = HuffmanTree.buildHuffmanTree(characters);
 
         double sizeNode = 40;
         double widthCanvas = sizeNode*(Math.pow(2,huffmanTree.getDepth()))*2+4*sizeNode;
@@ -23,6 +26,14 @@ public class ControllerHuffmanTree{
         canvas.setWidth(widthCanvas);
         canvas.setHeight(heightCanvas);
 
-        huffmanTree.drawTree(gc, widthCanvas/2,sizeNode, sizeNode);
+        huffmanTree.drawHuffmanTree(gc, widthCanvas/2,heightCanvas/2, sizeNode);
+        Map<String, String> charactersCodes = huffmanTree.getCharactersCodes();
+
+        String mapCharactersCodesAsString = charactersCodes.keySet().stream()
+                .map(key -> key + " : " + charactersCodes.get(key))
+                .collect(Collectors.joining("\n"));
+
+        areaCharactersCode.setText(mapCharactersCodesAsString);
+
     }
 }

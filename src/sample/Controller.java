@@ -39,7 +39,7 @@ public class Controller  {
     public void showCharactersStatistic(ActionEvent event) {
         String text = inputText.getText();
         if(!text.equals("")){
-            showLettersStatistics(text);
+            showCharactersStatistics(text);
             showEntropy(text);
             buttonShowTree.setDisable(false);
         }
@@ -56,7 +56,7 @@ public class Controller  {
         try {
             Pane root = (Pane) loader.load(getClass().getResource("/tree/tree.fxml").openStream());
             ControllerHuffmanTree controllerHuffmanTree = (ControllerHuffmanTree) loader.getController();
-            controllerHuffmanTree.showHuffmanTree(getTextAsSortedMapLettersFrequent(inputText.getText()));
+            controllerHuffmanTree.showHuffmanTree(getTextAsSortedMapCharactersFrequent(inputText.getText()));
             Scene scene = new Scene(root);
             treeStage.setScene(scene);
             treeStage.setTitle("Huffman");
@@ -69,12 +69,12 @@ public class Controller  {
         }
     }
 
-    public Map<String, Long> getTextAsSortedMapLettersFrequent(String text){
-        Map<String, Long> frequentChars = Arrays.stream(
+    public Map<String, Long> getTextAsSortedMapCharactersFrequent(String text){
+        Map<String, Long> frequentCharacters = Arrays.stream(
                 text.split("")).collect(
                 Collectors.groupingBy(c -> c, Collectors.counting()));
 
-        Map<String, Long> sortedFrequentChars = frequentChars
+        Map<String, Long> sortedFrequentChars = frequentCharacters
                 .entrySet()
                 .stream()
                 .sorted(comparingByValue())
@@ -85,13 +85,13 @@ public class Controller  {
         return sortedFrequentChars;
     }
 
-    public void showLettersStatistics(String text) {
+    public void showCharactersStatistics(String text) {
         Integer textLenght = text.length();
-        Map<String, Long> mapLettersFrequent = getTextAsSortedMapLettersFrequent(text);
+        Map<String, Long> mapCharactersFrequent = getTextAsSortedMapCharactersFrequent(text);
 
-        String mapAsString = mapLettersFrequent.keySet().stream()
-                .map(key -> key + " : " + mapLettersFrequent.get(key) + "  "
-                        + String.format("%.2f", ((double)mapLettersFrequent.get(key)/textLenght)*100) + "%")
+        String mapAsString = mapCharactersFrequent.keySet().stream()
+                .map(key -> key + " : " + mapCharactersFrequent.get(key) + "  "
+                        + String.format("%.2f", ((double)mapCharactersFrequent.get(key)/textLenght)*100) + "%")
                 .collect(Collectors.joining("\n"));
         areaCharactersStatistic.setText(mapAsString);
     }
@@ -102,9 +102,9 @@ public class Controller  {
 
     public Double calculateEntropy(String text) {
         Integer textLenght = text.length();
-        Map<String, Long> mapLettersFrequent = getTextAsSortedMapLettersFrequent(text);
+        Map<String, Long> mapCharactersFrequent = getTextAsSortedMapCharactersFrequent(text);
         Double entropy=0.0;
-        for (Map.Entry<String, Long> entry : mapLettersFrequent.entrySet()) {
+        for (Map.Entry<String, Long> entry : mapCharactersFrequent.entrySet()) {
             double p = (double)entry.getValue()/textLenght;
             entropy += entry.getValue()*(p*log2(1/p));
         }
