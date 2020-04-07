@@ -20,19 +20,48 @@
                <children>
                   <VBox prefHeight="520.0" prefWidth="240.0">
                      <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Characters statistic" textAlignment="CENTER" wrappingWidth="239.35503387451172">
+                           <font>
+                              <Font name="David CLM Bold Italic" size="20.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
+                        </Text>
+                        <TextArea fx:id="areaCharactersStatistic" editable="false" prefHeight="113.0" prefWidth="179.0" VBox.vgrow="ALWAYS">
+                           <VBox.margin>
+                              <Insets left="30.0" right="30.0" />
+                           </VBox.margin>
+                        </TextArea>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Characters code" textAlignment="CENTER" wrappingWidth="239.35503387451172">
                            <font>
                               <Font name="David CLM Bold Italic" size="20.0" />
                            </font>
                            <VBox.margin>
-                              <Insets top="40.0" />
+                              <Insets top="10.0" />
                            </VBox.margin>
                         </Text>
-                        <TextArea fx:id="areaCharactersCode" editable="false" prefHeight="226.0" prefWidth="179.0">
+                        <TextArea fx:id="areaCharactersCode" editable="false" prefHeight="113.0" prefWidth="179.0" VBox.vgrow="ALWAYS">
                            <VBox.margin>
-                              <Insets left="30.0" right="30.0" top="5.0" />
+                              <Insets left="30.0" right="30.0" />
                            </VBox.margin>
                         </TextArea>
+                        <HBox prefHeight="26.0" prefWidth="240.0">
+                           <children>
+                              <Label prefHeight="18.0" prefWidth="122.0" text="Entropy:">
+                                 <font>
+                                    <Font name="David CLM Bold Italic" size="14.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets top="2.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <TextField fx:id="entropyField" editable="false" prefHeight="26.0" prefWidth="221.0" />
+                           </children>
+                           <VBox.margin>
+                              <Insets left="20.0" right="20.0" top="20.0" />
+                           </VBox.margin>
+                        </HBox>
                         <HBox prefHeight="26.0" prefWidth="240.0">
                            <children>
                               <Label prefHeight="18.0" prefWidth="122.0" text="Average word length:">
@@ -45,9 +74,9 @@
                               </Label>
                               <TextField fx:id="averageWordLengthField" editable="false" prefHeight="26.0" prefWidth="78.0" />
                            </children>
-                           <padding>
-                              <Insets left="20.0" right="20.0" top="20.0" />
-                           </padding>
+                           <VBox.margin>
+                              <Insets left="20.0" right="20.0" top="10.0" />
+                           </VBox.margin>
                         </HBox>
                      </children>
                   </VBox>
@@ -69,7 +98,7 @@
                   <Insets top="20.0" />
                </VBox.margin>
             </Text>
-            <TextArea fx:id="areaEncodedText" editable="false" prefHeight="106.0" prefWidth="880.0">
+            <TextArea fx:id="areaEncodedText" editable="false" prefHeight="106.0" prefWidth="880.0" wrapText="true">
                <VBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" />
                </VBox.margin>
