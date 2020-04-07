@@ -56,7 +56,7 @@ public class Controller  {
         try {
             Pane root = (Pane) loader.load(getClass().getResource("/tree/tree.fxml").openStream());
             ControllerHuffmanTree controllerHuffmanTree = (ControllerHuffmanTree) loader.getController();
-            controllerHuffmanTree.showHuffmanTree(getTextAsSortedMapCharactersFrequent(inputText.getText()));
+            controllerHuffmanTree.showHuffmanTree(getTextAsSortedMapCharactersFrequent(inputText.getText()), inputText.getText());
             Scene scene = new Scene(root);
             treeStage.setScene(scene);
             treeStage.setTitle("Huffman");

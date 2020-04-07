@@ -14,7 +14,7 @@
 
 <AnchorPane prefHeight="520.0" prefWidth="900.0" style="-fx-background-color: #e1ede7;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tree.ControllerHuffmanTree">
    <children>
-      <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" style="-fx-alignment: center;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <HBox prefHeight="400.0" prefWidth="500.0" VBox.vgrow="ALWAYS">
                <children>
@@ -61,7 +61,7 @@
                   </ScrollPane>
                </children>
             </HBox>
-            <Text nodeOrientation="LEFT_TO_RIGHT" strokeType="OUTSIDE" strokeWidth="0.0" text="Coded text" textAlignment="CENTER" wrappingWidth="900.0">
+            <Text nodeOrientation="LEFT_TO_RIGHT" strokeType="OUTSIDE" strokeWidth="0.0" text="Encoded text" textAlignment="CENTER" wrappingWidth="110.40005493164062">
                <font>
                   <Font name="David CLM Bold Italic" size="20.0" />
                </font>
@@ -69,7 +69,7 @@
                   <Insets top="20.0" />
                </VBox.margin>
             </Text>
-            <TextArea fx:id="areaCodedText" editable="false" prefHeight="106.0" prefWidth="880.0">
+            <TextArea fx:id="areaEncodedText" editable="false" prefHeight="106.0" prefWidth="880.0">
                <VBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" />
                </VBox.margin>

@@ -16,7 +16,10 @@ public class ControllerHuffmanTree{
     @FXML
     TextArea areaCharactersCode;
 
-    public void showHuffmanTree(Map<String, Long> characters){
+    @FXML
+    TextArea areaEncodedText;
+
+    public void showHuffmanTree(Map<String, Long> characters, String text){
         GraphicsContext gc = canvas.getGraphicsContext2D();
         HuffmanTree huffmanTree = HuffmanTree.buildHuffmanTree(characters);
 
@@ -34,6 +37,16 @@ public class ControllerHuffmanTree{
                 .collect(Collectors.joining("\n"));
 
         areaCharactersCode.setText(mapCharactersCodesAsString);
-
+        areaEncodedText.setText(textToHuffmansEncode(text, charactersCodes));
     }
+
+    public String textToHuffmansEncode(String text, Map charactersCodes){
+        String encodedText="";
+        char[] chars = text.toCharArray();
+        for(int i=0; i< chars.length; i++)
+            encodedText+=charactersCodes.get(String.valueOf(chars[i]));
+        return encodedText;
+    }
+
+
 }

@@ -28,42 +28,62 @@ public class HuffmanTree {
     }
 
     static public HuffmanTree buildHuffmanTree(Map<String, Long> characters) {
-        ArrayList<HuffmanTree> allHuffmanTrees = new ArrayList();
-        int depth = 0;
-        ArrayList<HuffmanTree> nodesInCurrentLevel = new ArrayList();
+        ArrayList<HuffmanTree> allHuffmanSubTrees = new ArrayList();
+        int level = 0;
+        ArrayList<HuffmanTree> SubTreesInCurrentLevel = new ArrayList();
         for (Map.Entry<String, Long> entry : characters.entrySet()) {
-            nodesInCurrentLevel.add(new HuffmanTree(entry.getKey(), entry.getValue()));
+            SubTreesInCurrentLevel.add(new HuffmanTree(entry.getKey(), entry.getValue()));
         }
-        while (nodesInCurrentLevel.size() > 1) {
-            depth++;
-            Collections.sort(nodesInCurrentLevel, new Comparator<HuffmanTree>() {
+
+        while (SubTreesInCurrentLevel.size() > 1) {
+
+
+            Collections.sort(SubTreesInCurrentLevel, new Comparator<HuffmanTree>() {
                 @Override
                 public int compare(HuffmanTree o1, HuffmanTree o2) {
                     return (int) (o1.data - o2.data);
                 }
             });
-            ArrayList<HuffmanTree> nodesInNextLevel = new ArrayList();
-            if (nodesInCurrentLevel.size() % 2 != 0) {
-                nodesInCurrentLevel.get(nodesInCurrentLevel.size() - 1).deepen();
-                nodesInNextLevel.add(nodesInCurrentLevel.remove(nodesInCurrentLevel.size() - 1));
+            ArrayList<HuffmanTree> SubTreesInNextLevel = new ArrayList();
+            if (SubTreesInCurrentLevel.size() > 2) {
+                for (int i=0; i < SubTreesInCurrentLevel.size(); i++) {
+                    for(int j=2; j < i; j++){
+                        if (SubTreesInCurrentLevel.get(i).data > SubTreesInCurrentLevel.get(j - 1).data + SubTreesInCurrentLevel.get(j - 2).data) {
+                            SubTreesInCurrentLevel.get(i).deepen();
+                            SubTreesInNextLevel.add(SubTreesInCurrentLevel.remove(i));
+                            i--;
+                            break;
+                        }
+                    }
+                }
             }
-            for (int i = 0; i <= nodesInCurrentLevel.size() - 2; i += 2) {
-                HuffmanTree leftChild = nodesInCurrentLevel.get(i);
-                leftChild.code = "0";
-                HuffmanTree rightChild = nodesInCurrentLevel.get(i + 1);
-                rightChild.code = "1";
-                nodesInNextLevel.add(new HuffmanTree(leftChild, rightChild, leftChild.data + rightChild.data, depth));
+            if (SubTreesInCurrentLevel.size() % 2 != 0) {
+                SubTreesInCurrentLevel.get(SubTreesInCurrentLevel.size() - 1).deepen();
+                SubTreesInNextLevel.add(SubTreesInCurrentLevel.remove(SubTreesInCurrentLevel.size() - 1));
             }
-            allHuffmanTrees.addAll(nodesInCurrentLevel);
-            nodesInCurrentLevel = nodesInNextLevel;
-        }
-        allHuffmanTrees.addAll(nodesInCurrentLevel);
 
-        HuffmanTree topHuffmanTree = allHuffmanTrees.get(allHuffmanTrees.size() - 1);
+            for (int i = 0; i <= SubTreesInCurrentLevel.size() - 2; i += 2) {
+                HuffmanTree leftChild = SubTreesInCurrentLevel.get(i);
+                leftChild.code = "0";
+                HuffmanTree rightChild = SubTreesInCurrentLevel.get(i + 1);
+                rightChild.code = "1";
+                SubTreesInNextLevel.add(new HuffmanTree(leftChild, rightChild, leftChild.data + rightChild.data, level+1));
+            }
+            /*System.out.println("LEVEL: "+level);
+            for (HuffmanTree node : SubTreesInCurrentLevel) {
+                System.out.println(node.data+" level: "+node.depth);
+            }*/
+            allHuffmanSubTrees.addAll(SubTreesInCurrentLevel);
+            SubTreesInCurrentLevel = SubTreesInNextLevel;
+            level++;
+        }
+        allHuffmanSubTrees.addAll(SubTreesInCurrentLevel);
+
+        HuffmanTree topHuffmanTree = allHuffmanSubTrees.get(allHuffmanSubTrees.size() - 1);
         topHuffmanTree.buildCodesPaths();
-        /*for (HuffmanTree node : allHuffmanTrees) {
-            System.out.println(node);
-        }*/
+        for (HuffmanTree tree : allHuffmanSubTrees) {
+            System.out.println(tree.data+" level: "+tree.depth);
+        }
         return topHuffmanTree;
     }
 
@@ -73,11 +93,11 @@ public class HuffmanTree {
         if (passed == 0) {
             passed++;
             if (leftChild != null) {
-                y += (Math.pow(2, depth) * sizeNode) / 2;
+                y -= (Math.pow(2, depth) * sizeNode) / 2;
                 x -= (Math.pow(2, depth) * sizeNode) / 2;
                 leftChild.drawHuffmanTree(gc, x, y, sizeNode);
             } else if (parent != null) {
-                double nextY = y - (Math.pow(2, depth + 1) * sizeNode) / 2;
+                double nextY = y + (Math.pow(2, depth + 1) * sizeNode) / 2;
                 double nextX;
                 if (parent.rightChild == this) nextX = x - (Math.pow(2, depth + 1) * sizeNode) / 2;
                 else nextX = x + (Math.pow(2, depth + 1) * sizeNode) / 2;
@@ -87,7 +107,7 @@ public class HuffmanTree {
                 gc.fillOval(x, y, sizeNode, sizeNode);
                 gc.setStroke(Color.BLACK);
                 gc.setLineWidth(1);
-                gc.strokeText(code.substring(code.length() - 1), x + sizeNode / 2, y);
+                gc.strokeText(code.substring(code.length() - 1), x + sizeNode / 2, y + sizeNode + 15);
                 gc.setStroke(Color.WHITE);
                 gc.strokeText(data + ": \"" + character + "\"", x + 4, y + sizeNode / 2);
                 parent.drawHuffmanTree(gc, nextX, nextY, sizeNode);
@@ -105,11 +125,11 @@ public class HuffmanTree {
         } else if (passed == 1) {
             passed++;
             if (rightChild != null) {
-                y += (Math.pow(2, depth) * sizeNode) / 2;
+                y -= (Math.pow(2, depth) * sizeNode) / 2;
                 x += (Math.pow(2, depth) * sizeNode) / 2;
                 rightChild.drawHuffmanTree(gc, x, y, sizeNode);
             } else {
-                double nextY = y - (Math.pow(2, depth + 1) * sizeNode) / 2;
+                double nextY = y + (Math.pow(2, depth + 1) * sizeNode) / 2;
                 double nextX;
                 if (parent.rightChild == this) nextX = x - (Math.pow(2, depth + 1) * sizeNode) / 2;
                 else nextX = x + (Math.pow(2, depth + 1) * sizeNode) / 2;
@@ -119,14 +139,14 @@ public class HuffmanTree {
                 gc.fillOval(x, y, sizeNode, sizeNode);
                 gc.setStroke(Color.BLACK);
                 gc.setLineWidth(1);
-                gc.strokeText(code.substring(code.length() - 1), x + sizeNode / 2, y);
+                gc.strokeText(code.substring(code.length() - 1), x + sizeNode / 2, y + sizeNode + 15);
                 gc.setStroke(Color.WHITE);
                 gc.strokeText(String.valueOf(data), x + sizeNode / 2 - 3, y + sizeNode / 2 + 3);
                 parent.drawHuffmanTree(gc, nextX, nextY, sizeNode);
             }
         } else if (passed == 2) {
             if (parent != null) {
-                double nextY = y - (Math.pow(2, depth + 1) * sizeNode) / 2;
+                double nextY = y + (Math.pow(2, depth + 1) * sizeNode) / 2;
                 double nextX;
                 if (parent.rightChild == this) nextX = x - (Math.pow(2, depth + 1) * sizeNode) / 2;
                 else nextX = x + (Math.pow(2, depth + 1) * sizeNode) / 2;
@@ -136,14 +156,14 @@ public class HuffmanTree {
                 gc.fillOval(x, y, sizeNode, sizeNode);
                 gc.setStroke(Color.BLACK);
                 gc.setLineWidth(1);
-                gc.strokeText(code.substring(code.length() - 1), x + sizeNode / 2, y);
+                gc.strokeText(code.substring(code.length() - 1), x + sizeNode / 2, y + sizeNode + 15);
                 gc.setStroke(Color.WHITE);
                 gc.strokeText(String.valueOf(data), x + sizeNode / 2 - 3, y + sizeNode / 2 + 3);
                 parent.drawHuffmanTree(gc, nextX, nextY, sizeNode);
             } else {
                 gc.setStroke(Color.BROWN);
                 gc.setLineWidth((2 * sizeNode) / 3);
-                gc.strokeLine(x + sizeNode / 2, y + sizeNode / 2, x + sizeNode / 2, sizeNode * Math.pow(2, depth) * 2);
+                gc.strokeLine(x + sizeNode / 2, y + sizeNode / 2, x + sizeNode / 2, y + 100);
                 gc.fillOval(x, y, sizeNode, sizeNode);
                 gc.setLineWidth(1);
                 gc.setStroke(Color.WHITE);
@@ -194,16 +214,16 @@ public class HuffmanTree {
         return charactersCodes;
     }
 
-    private void recursiveSearchCharactersCodes(Map<String, String> charactersCodes){
+    private void recursiveSearchCharactersCodes(Map<String, String> charactersCodes) {
         if (passed == 0) {
             passed++;
             if (leftChild != null) {
                 leftChild.recursiveSearchCharactersCodes(charactersCodes);
             } else if (parent != null) {
-                charactersCodes.put(character,code);
+                charactersCodes.put(character, code);
                 parent.recursiveSearchCharactersCodes(charactersCodes);
             } else {
-                charactersCodes.put(character,code);
+                charactersCodes.put(character, code);
                 zeroPassedFlags();
                 return;
             }
@@ -212,7 +232,7 @@ public class HuffmanTree {
             if (rightChild != null) {
                 rightChild.recursiveSearchCharactersCodes(charactersCodes);
             } else {
-                charactersCodes.put(character,code);
+                charactersCodes.put(character, code);
                 parent.recursiveSearchCharactersCodes(charactersCodes);
             }
         } else if (passed == 2) {
@@ -224,8 +244,6 @@ public class HuffmanTree {
             }
         }
     }
-
-
 
     private void buildCodesPaths() {
         if (passed == 0) {
@@ -274,18 +292,14 @@ public class HuffmanTree {
         }
     }
 
-
     public int getDepth() {
         return depth;
     }
 
     @Override
     public String toString() {
-        return "Tree{" +
+        return "HuffmanTree{" +
                 "data=" + data +
-                ", depth=" + depth +
-                ", character=" + character +
-                ", " + code +
                 '}';
     }
 }
