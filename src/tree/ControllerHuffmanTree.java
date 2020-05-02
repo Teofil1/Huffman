@@ -3,7 +3,6 @@ package tree;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
@@ -32,6 +31,9 @@ public class ControllerHuffmanTree {
     @FXML
     TextField entropyField;
 
+    @FXML
+    TextField averageWordLengthField;
+
     public void showHuffmanTree(String text) {
         Map<String, Long> characters = getTextAsSortedMapCharactersFrequent(text);
 
@@ -42,28 +44,26 @@ public class ControllerHuffmanTree {
         double widthCanvas = sizeNode * (Math.pow(2, huffmanTree.getDepth())) + sizeNode * (huffmanTree.getDepth() + 1) / 2;
         double heightCanvas = sizeNode * Math.pow(2, huffmanTree.getDepth() - 1) + 300;
         if (widthCanvas < 100) widthCanvas = 200;
-        if(widthCanvas > 4096 || heightCanvas > 4096){
+        /*if(widthCanvas > 4096 || heightCanvas > 4096){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error Dialog");
             alert.setHeaderText(null);
             alert.setContentText("Sorry, your screen resolution doesn't allow you to display this tree");
             alert.showAndWait();
-        } else{
+        } else{*/
             canvas.setWidth(widthCanvas);
             canvas.setHeight(heightCanvas);
             huffmanTree.drawHuffmanTree(gc, widthCanvas / 2, heightCanvas - 200, sizeNode);
-        }
+        //}
 
-        Map<String, String> charactersCodes = huffmanTree.getCharactersCodes();
-        String mapCharactersCodesAsString = charactersCodes.keySet().stream()
-                .map(key -> key + " : " + charactersCodes.get(key))
-                .collect(Collectors.joining("\n"));
-
-        areaCharactersCode.setText(mapCharactersCodesAsString);
-        areaEncodedText.setText(textToHuffmansEncode(text, charactersCodes));
         showCharactersStatistics(text);
+        showCharactersCodes(huffmanTree);
         showEntropy(text);
+        showAverageWordLength(text, huffmanTree);
+        showEncodedText(text, huffmanTree);
     }
+
+
 
     public String textToHuffmansEncode(String text, Map charactersCodes) {
         String encodedText = "";
@@ -89,12 +89,26 @@ public class ControllerHuffmanTree {
         return sortedFrequentChars;
     }
 
+    public void showEncodedText(String text, HuffmanTree huffmanTree) {
+        Map<String, String> charactersCodes = huffmanTree.getCharactersCodes();
+        areaEncodedText.setText(textToHuffmansEncode(text, charactersCodes));
+    }
+
+    public void showCharactersCodes(HuffmanTree huffmanTree) {
+        Map<String, String> charactersCodes = huffmanTree.getCharactersCodes();
+        String mapCharactersCodesAsString = charactersCodes.keySet().stream()
+                .map(key -> "\""+key + "\" : " + charactersCodes.get(key))
+                .collect(Collectors.joining("\n"));
+
+        areaCharactersCode.setText(mapCharactersCodesAsString);
+    }
+
     public void showCharactersStatistics(String text) {
         Integer textLenght = text.length();
         Map<String, Long> mapCharactersFrequent = getTextAsSortedMapCharactersFrequent(text);
 
         String mapAsString = mapCharactersFrequent.keySet().stream()
-                .map(key -> key + " : " + mapCharactersFrequent.get(key) + "  "
+                .map(key -> "\""+key + "\" : " + mapCharactersFrequent.get(key) + "  "
                         + String.format("%.2f", ((double)mapCharactersFrequent.get(key)/textLenght)*100) + "%")
                 .collect(Collectors.joining("\n"));
         areaCharactersStatistic.setText(mapAsString);
@@ -104,19 +118,34 @@ public class ControllerHuffmanTree {
         entropyField.setText(String.format("%.4f", calculateEntropy(text)));
     }
 
+    public void showAverageWordLength(String text, HuffmanTree huffmanTree) {
+        averageWordLengthField.setText(String.format("%.4f", calculateAverageWordLength(text, huffmanTree)));
+    }
+
+    public Double calculateAverageWordLength(String text, HuffmanTree huffmanTree) {
+        Double averageWordLength=0.0;
+        Map<String, Long> mapCharactersFrequent = getTextAsSortedMapCharactersFrequent(text);
+        Map<String, String> charactersCodes = huffmanTree.getCharactersCodes();
+        for (Map.Entry<String, String> entry : charactersCodes.entrySet()){
+            double p = (double) mapCharactersFrequent.get(entry.getKey())/text.length();
+            averageWordLength += entry.getValue().length()*p;
+        }
+        return averageWordLength;
+    }
+
+    public static double log2(double d) {
+        return Math.log(d)/Math.log(2.0);
+    }
+
     public Double calculateEntropy(String text) {
         Integer textLenght = text.length();
         Map<String, Long> mapCharactersFrequent = getTextAsSortedMapCharactersFrequent(text);
         Double entropy=0.0;
         for (Map.Entry<String, Long> entry : mapCharactersFrequent.entrySet()) {
             double p = (double)entry.getValue()/textLenght;
-            entropy += entry.getValue()*(p*log2(1/p));
+            entropy += p*log2(1/p);
         }
         return entropy;
-    }
-
-    public static double log2(double d) {
-        return Math.log(d)/Math.log(2.0);
     }
 
 

@@ -289,9 +289,6 @@ public class HuffmanTree {
         return depth;
     }
 
-    //qwertyuiop[]asdfghjkl;'zxcvbnm,./ ?":}{|\1234567890-=+_)(*&^%$#@!`~<>,.
-    //qweeerrrrrtttttttttyyyyyyyyyyyyyyyuuuuuuuuuuuuuuuuuuuuuuuuuiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
-
 }
 
 
