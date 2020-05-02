@@ -34,6 +34,15 @@ public class ControllerHuffmanTree {
     @FXML
     TextField averageWordLengthField;
 
+    @FXML
+    TextField numberOfBitsBeforeField;
+
+    @FXML
+    TextField numberOfBitsAfterField;
+
+    @FXML
+    TextField compressionPercentageField;
+
     public void showHuffmanTree(String text) {
         Map<String, Long> characters = getTextAsSortedMapCharactersFrequent(text);
 
@@ -61,6 +70,7 @@ public class ControllerHuffmanTree {
         showEntropy(text);
         showAverageWordLength(text, huffmanTree);
         showEncodedText(text, huffmanTree);
+        showCompressionStatistic(text, huffmanTree);
     }
 
 
@@ -146,6 +156,24 @@ public class ControllerHuffmanTree {
             entropy += p*log2(1/p);
         }
         return entropy;
+    }
+
+    public void showCompressionStatistic(String text, HuffmanTree huffmanTree){
+        int numberOfBitsBeforeCompression = countBitsBeforeCompression(text);
+        numberOfBitsBeforeField.setText(String.valueOf(numberOfBitsBeforeCompression));
+        int numberOfBitsAfterCompression = countBitsAfterCompression(text, huffmanTree);
+        numberOfBitsAfterField.setText(String.valueOf(numberOfBitsAfterCompression));
+        Double compressionPercentage = 100-(((double) numberOfBitsAfterCompression/numberOfBitsBeforeCompression)*100);
+        compressionPercentageField.setText(String.format("%.2f", compressionPercentage));
+    }
+
+    public Integer countBitsBeforeCompression(String text) {
+        return text.getBytes().length*8;
+    }
+
+    public Integer countBitsAfterCompression(String text, HuffmanTree huffmanTree) {
+        Map<String, String> charactersCodes = huffmanTree.getCharactersCodes();
+        return textToHuffmansEncode(text, charactersCodes).length();
     }
 
 
