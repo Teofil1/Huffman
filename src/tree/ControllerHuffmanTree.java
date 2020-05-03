@@ -1,14 +1,31 @@
 package tree;
 
+import javafx.embed.swing.SwingFXUtils;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.WritableImage;
+import javafx.scene.layout.Pane;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 
+import javax.imageio.ImageIO;
+import java.awt.image.RenderedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import static java.util.Map.Entry.comparingByValue;
@@ -53,17 +70,9 @@ public class ControllerHuffmanTree {
         double widthCanvas = sizeNode * (Math.pow(2, huffmanTree.getDepth())) + sizeNode * (huffmanTree.getDepth() + 1) / 2;
         double heightCanvas = sizeNode * Math.pow(2, huffmanTree.getDepth() - 1) + 300;
         if (widthCanvas < 100) widthCanvas = 200;
-        /*if(widthCanvas > 4096 || heightCanvas > 4096){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error Dialog");
-            alert.setHeaderText(null);
-            alert.setContentText("Sorry, your screen resolution doesn't allow you to display this tree");
-            alert.showAndWait();
-        } else{*/
-            canvas.setWidth(widthCanvas);
-            canvas.setHeight(heightCanvas);
-            huffmanTree.drawHuffmanTree(gc, widthCanvas / 2, heightCanvas - 200, sizeNode);
-        //}
+        canvas.setWidth(widthCanvas);
+        canvas.setHeight(heightCanvas);
+        huffmanTree.drawHuffmanTree(gc, widthCanvas / 2, heightCanvas - 200, sizeNode);
 
         showCharactersStatistics(text);
         showCharactersCodes(huffmanTree);
@@ -73,30 +82,12 @@ public class ControllerHuffmanTree {
         showCompressionStatistic(text, huffmanTree);
     }
 
-
-
     public String textToHuffmansEncode(String text, Map charactersCodes) {
         String encodedText = "";
         char[] chars = text.toCharArray();
         for (int i = 0; i < chars.length; i++)
             encodedText += charactersCodes.get(String.valueOf(chars[i]));
         return encodedText;
-    }
-
-    public Map<String, Long> getTextAsSortedMapCharactersFrequent(String text){
-        Map<String, Long> frequentCharacters = Arrays.stream(
-                text.split("")).collect(
-                Collectors.groupingBy(c -> c, Collectors.counting()));
-
-        Map<String, Long> sortedFrequentChars = frequentCharacters
-                .entrySet()
-                .stream()
-                .sorted(comparingByValue())
-                .collect(
-                        toMap(e -> e.getKey(), e -> e.getValue(), (e1, e2) -> e2,
-                                LinkedHashMap::new));
-
-        return sortedFrequentChars;
     }
 
     public void showEncodedText(String text, HuffmanTree huffmanTree) {
@@ -158,6 +149,22 @@ public class ControllerHuffmanTree {
         return entropy;
     }
 
+    public Map<String, Long> getTextAsSortedMapCharactersFrequent(String text){
+        Map<String, Long> frequentCharacters = Arrays.stream(
+                text.split("")).collect(
+                Collectors.groupingBy(c -> c, Collectors.counting()));
+
+        Map<String, Long> sortedFrequentChars = frequentCharacters
+                .entrySet()
+                .stream()
+                .sorted(comparingByValue())
+                .collect(
+                        toMap(e -> e.getKey(), e -> e.getValue(), (e1, e2) -> e2,
+                                LinkedHashMap::new));
+
+        return sortedFrequentChars;
+    }
+
     public void showCompressionStatistic(String text, HuffmanTree huffmanTree){
         int numberOfBitsBeforeCompression = countBitsBeforeCompression(text);
         numberOfBitsBeforeField.setText(String.valueOf(numberOfBitsBeforeCompression));
@@ -174,6 +181,24 @@ public class ControllerHuffmanTree {
     public Integer countBitsAfterCompression(String text, HuffmanTree huffmanTree) {
         Map<String, String> charactersCodes = huffmanTree.getCharactersCodes();
         return textToHuffmansEncode(text, charactersCodes).length();
+    }
+
+    @FXML
+    public void saveImage(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter extFilter =
+                new FileChooser.ExtensionFilter("png files (*.png)", "*.png");
+        fileChooser.getExtensionFilters().add(extFilter);
+        File file = fileChooser.showSaveDialog(null);
+        if(file != null){
+            try {
+                WritableImage writableImage = new WritableImage((int) canvas.getWidth(), (int) canvas.getHeight());
+                canvas.snapshot(null, writableImage);
+                RenderedImage renderedImage = SwingFXUtils.fromFXImage(writableImage, null);
+                ImageIO.write(renderedImage, "png", file);
+            } catch (IOException ex) {
+            }
+        }
     }
 
 

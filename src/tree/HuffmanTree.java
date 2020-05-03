@@ -58,7 +58,6 @@ public class HuffmanTree {
                 SubTreesInCurrentLevel.get(SubTreesInCurrentLevel.size() - 1).deepen();
                 SubTreesInNextLevel.add(SubTreesInCurrentLevel.remove(SubTreesInCurrentLevel.size() - 1));
             }
-
             for (int i = 0; i <= SubTreesInCurrentLevel.size() - 2; i += 2) {
                 HuffmanTree leftChild = SubTreesInCurrentLevel.get(i);
                 leftChild.code = "0";
@@ -71,7 +70,6 @@ public class HuffmanTree {
             level++;
         }
         allHuffmanSubTrees.addAll(SubTreesInCurrentLevel);
-
         HuffmanTree topHuffmanTree = allHuffmanSubTrees.get(allHuffmanSubTrees.size() - 1);
         topHuffmanTree.buildCodesPaths();
 

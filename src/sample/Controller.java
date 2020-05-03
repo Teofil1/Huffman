@@ -28,8 +28,8 @@ public class Controller  {
             Scene scene = new Scene(root);
             treeStage.setScene(scene);
             treeStage.setTitle("Huffman");
-            treeStage.setMinHeight(365);
-            treeStage.setMinWidth(610);
+            treeStage.setMinHeight(600);
+            treeStage.setMinWidth(700);
             treeStage.show();
 
         } catch (IOException e) {
