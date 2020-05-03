@@ -2,20 +2,13 @@ package tree;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.WritableImage;
-import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
-import javafx.stage.Window;
 
 import javax.imageio.ImageIO;
 import java.awt.image.RenderedImage;
@@ -24,8 +17,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import static java.util.Map.Entry.comparingByValue;
